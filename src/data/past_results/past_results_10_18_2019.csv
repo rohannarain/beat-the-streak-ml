@@ -1,0 +1,12 @@
+Name,player_got_hit
+Aaron Judge,Yes
+Didi Gregorius,Yes
+DJ LeMahieu,Yes
+Gleyber Torres,Yes
+Alex Bregman,Yes
+Carlos Correa,Yes
+George Springer,Yes
+Jose Altuve,No
+Martin Maldonado,No
+Michael Brantley,No
+Overall Accuracy,0.7

@@ -1,0 +1,12 @@
+Name,player_got_hit
+Paul Goldschmidt,Yes
+Anthony Rendon,Yes
+Alex Bregman,No
+Jose Altuve,Yes
+Yordan Alvarez,No
+Yuli Gurriel,No
+Aaron Judge,Yes
+Edwin Encarnacion,No
+Gio Urshela,Yes
+Gleyber Torres,Yes
+Overall Accuracy,0.6

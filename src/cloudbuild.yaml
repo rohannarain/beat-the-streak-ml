@@ -1,0 +1,39 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: ['-c', 'docker pull gcr.io/beat-the-streak-ml/bts-ml-etl:latest || exit 0']
+
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args: ['-c', 'docker pull gcr.io/beat-the-streak-ml/bts-ml-model:latest || exit 0']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build', 
+    '-f', 'Dockerfile.etl', 
+    '-t', 'gcr.io/beat-the-streak-ml/bts-ml-etl:latest', 
+    '--cache-from', 'gcr.io/beat-the-streak-ml/bts-ml-etl:latest',
+    '.'
+  ]
+  dir: 'src'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build', 
+    '-f', 'Dockerfile.model_training', 
+    '-t', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest', 
+    '--cache-from', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest',
+    '.'
+  ]
+  dir: 'src'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['run', '-t', 'gcr.io/beat-the-streak-ml/bts-ml-etl:latest']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['run', '-t', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest']
+
+images: ['gcr.io/beat-the-streak-ml/bts-ml-etl:latest', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest']
+timeout: 6000s
+
+

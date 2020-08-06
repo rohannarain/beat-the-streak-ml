@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <header class="page-header header container-fluid">
+      <!-- <div class="overlay"></div> -->
+      <div class="description">
+          <h1>Beat the Streak with ML</h1>
+          <p>These are the top 10 most likely hitters to get a hit today ({{ today }}), with probabilities outputted by my models.</p>
+      </div>
+    </header>
+	  {% if blob_not_found_msg %}
+		<div class="alert alert-danger text-center" role="alert">
+		  {{ blob_not_found_msg }}
+		</div>
+	  {% else %}
+	  <div class="list-group mx-auto w-75">
+	  	{% for i in range(cols_list[0]|length) %}
+		  <a href="#" class="list-group-item list-group-item-action style="background-color: rgba(245, 245, 245, 0.4);">
+		    <div class="d-flex w-100 justify-content-between">
+		      <h5 class="mb-1">{{i+1}}. {{ cols_list[col_names['Name']][i] }}</h5>
+		    </div>
+		    <p class="mb-1">Team: {{ cols_list[col_names['Team']][i] }}</p>
+		    <p class="mb-1">Hit Probability: {{ cols_list[col_names['Hit Probability']][i] }}</p>
+		  </a>
+		{% endfor %}
+	  </div>
+	  {% endif %}
+{% endblock %}

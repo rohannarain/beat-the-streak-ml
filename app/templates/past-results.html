@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <header class="page-header header container-fluid">
+      <!-- <div class="overlay"></div> -->
+      <div class="description">
+          <h1>Past Results</h1>
+          <p>Last updated <span id="span-date"></span></p>
+        <div class="dropdown">
+            <button class="btn btn-info dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select date
+            </button>   
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <!-- <a class="dropdown-item" id="prevDate1" href="#">Past date</a> -->
+            </div>
+            <!-- <div id="pastResults"></div> -->
+        </div>
+      </div>
+    </header>
+{% endblock %}

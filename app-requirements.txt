@@ -1,0 +1,5 @@
+flask
+gunicorn
+python-dotenv
+pytz
+google-cloud-storage
