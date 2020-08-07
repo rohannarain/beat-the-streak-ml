@@ -61,6 +61,9 @@ steps:
   ]
 
 - name: 'gcr.io/cloud-builders/docker'
+  volumes:
+  - name: 'credentials'
+    path: '/credentials'
   # args: [
   #   'run',
   #   '-t',
