@@ -1,7 +1,7 @@
 steps:
 - name: gcr.io/cloud-builders/gcloud
   volumes:
-  - name: 'credentials'
+  - name: 'keys'
     path: '/credentials'
   entrypoint: 'bash'
   args:
@@ -46,35 +46,37 @@ steps:
 
 - name: 'gcr.io/cloud-builders/docker'
   volumes:
-  - name: 'credentials'
+  - name: 'keys'
     path: '/credentials'
-  # args: [
-  #   'run',
-  #   '-t',
-  #   '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json',
-  #   'gcr.io/$PROJECT_ID/bts-ml-etl:latest'
-  # ]
-  entrypoint: 'bash'
   args: [
-    '-c', 
-    'docker run -t -e GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json -v /credentials:/app/credentials gcr.io/$PROJECT_ID/bts-ml-etl:latest'
+    'run',
+    '-t',
+    '-v', 'keys:/credentials'
+    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json',
+    'gcr.io/$PROJECT_ID/bts-ml-etl:latest'
   ]
+  # entrypoint: 'bash'
+  # args: [
+  #   '-c', 
+  #   'docker run -t -e GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json -v /credentials:/app/credentials gcr.io/$PROJECT_ID/bts-ml-etl:latest'
+  # ]
 
 - name: 'gcr.io/cloud-builders/docker'
   volumes:
-  - name: 'credentials'
+  - name: 'keys'
     path: '/credentials'
-  # args: [
-  #   'run',
-  #   '-t',
-  #   '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json',
-  #   'gcr.io/$PROJECT_ID/bts-ml-model:latest'
-  # ]
-  entrypoint: 'bash'
   args: [
-    '-c', 
-    'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json -v /credentials:/credentials gcr.io/$PROJECT_ID/bts-ml-model:latest'
+    'run',
+    '-t',
+    '-v', 'keys:/credentials'
+    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json',
+    'gcr.io/$PROJECT_ID/bts-ml-model:latest'
   ]
+  # entrypoint: 'bash'
+  # args: [
+  #   '-c', 
+  #   'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json -v credentials:/credentials gcr.io/$PROJECT_ID/bts-ml-model:latest'
+  # ]
 
 images: ['gcr.io/beat-the-streak-ml/bts-ml-etl:latest', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest']
 timeout: 6000s
