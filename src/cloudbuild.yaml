@@ -5,6 +5,7 @@ steps:
     - "-c"
     - |
       echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > /workspace/decrypted-credentials.json
+      cat /workspace/decrypted-credentials.json
 
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
