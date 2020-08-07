@@ -20,6 +20,6 @@ COPY postgres_upload.py ./
 COPY train_model.py ./
 COPY data/ data/
 
-ENV GOOGLE_APPLICATION_CREDENTIALS=credentials/decrypted-credentials.json
+ENV GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json
 
 ENTRYPOINT ["python", "train_model.py"]
