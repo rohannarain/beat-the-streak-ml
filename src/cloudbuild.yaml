@@ -4,8 +4,14 @@ steps:
   args:
     - "-c"
     - |
-      echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > decrypted-credentials.json
-      cat decrypted-credentials.json
+      echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > /decrypted-credentials.json
+
+- name: 'ubuntu'
+  entrypoint: 'bash'
+  args: 
+    - "-c"
+    - |
+      cat /decrypted-credentials.json
 
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
@@ -39,14 +45,14 @@ steps:
   entrypoint: 'bash'
   args: [
     '-c', 
-    'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=decrypted-credentials.json gcr.io/$PROJECT_ID/bts-ml-etl:latest'
+    'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/decrypted-credentials.json gcr.io/$PROJECT_ID/bts-ml-etl:latest'
   ]
 
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
   args: [
     '-c', 
-    'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=decrypted-credentials.json gcr.io/$PROJECT_ID/bts-ml-model:latest'
+    'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/decrypted-credentials.json gcr.io/$PROJECT_ID/bts-ml-model:latest'
   ]
 
 images: ['gcr.io/beat-the-streak-ml/bts-ml-etl:latest', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest']
