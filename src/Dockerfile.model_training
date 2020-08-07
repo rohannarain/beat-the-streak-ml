@@ -16,7 +16,7 @@ RUN pip install google-cloud-storage
 
 COPY utils_config.py ./
 COPY cloud_storage.py ./
-COPY postgres_upload.py ./
+# COPY postgres_upload.py ./
 COPY train_model.py ./
 COPY data/ data/
 
