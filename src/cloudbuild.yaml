@@ -2,7 +2,7 @@ steps:
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'bash'
   args: [ 
-    '-c', "gcloud secrets versions access 'latest' --secret=application-default-credentials-cloudbuild --project=105583633663 --format='get(payload.data)' | tr '_-' '/+' | base64 -d > decrypted-credentials.json" 
+    '-c', "gcloud secrets versions access 'latest' --secret=application-default-credentials-cloudbuild --project=beat-the-streak-ml --format='get(payload.data)' | tr '_-' '/+' | base64 -d > decrypted-credentials.json" 
   ]
 
 - name: 'gcr.io/cloud-builders/docker'
