@@ -1,10 +1,13 @@
 steps:
-# - name: gcr.io/cloud-builders/gcloud
-#   entrypoint: 'bash'
-#   args:
-#     - "-c"
-#     - |
-#       echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > decrypted-credentials.json
+- name: gcr.io/cloud-builders/gcloud
+  volumes:
+  - name: 'credentials'
+    path: '/credentials'
+  entrypoint: 'bash'
+  args:
+    - "-c"
+    - |
+      echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > /credentials/decrypted-credentials.json
 
 # - name: 'ubuntu'
 #   entrypoint: 'bash'
@@ -42,25 +45,29 @@ steps:
   dir: 'src'
 
 - name: 'gcr.io/cloud-builders/docker'
-  entrypoint: 'bash'
-  args: 
-    - "-c"
-    - |
-      echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > decrypted-credentials.json
-      docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/decrypted-credentials.json gcr.io/$PROJECT_ID/bts-ml-etl:latest
+  volumes:
+  - name: 'credentials'
+    path: '/credentials'
+  args: [
+    'run',
+    '-t',
+    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json',
+    'gcr.io/$PROJECT_ID/bts-ml-etl:latest'
+  ]
+  # entrypoint: 'bash'
   # args: [
   #   '-c', 
   #   'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/decrypted-credentials.json gcr.io/$PROJECT_ID/bts-ml-etl:latest'
   # ]
 
 - name: 'gcr.io/cloud-builders/docker'
-  entrypoint: 'bash'
-  args: 
-    - "-c"
-    - |
-      echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > decrypted-credentials.json
-      docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/decrypted-credentials.json gcr.io/$PROJECT_ID/bts-ml-model:latest
-
+  args: [
+    'run',
+    '-t',
+    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json',
+    'gcr.io/$PROJECT_ID/bts-ml-model:latest'
+  ]
+  # entrypoint: 'bash'
   # args: [
   #   '-c', 
   #   'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/decrypted-credentials.json gcr.io/$PROJECT_ID/bts-ml-model:latest'
