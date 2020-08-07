@@ -1,9 +1,10 @@
 steps:
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'bash'
-  args: [ 
-    '-c', "gcloud secrets versions access 'latest' --secret=application-default-credentials-cloudbuild --project=beat-the-streak-ml --format='get(payload.data)' | tr '_-' '/+' | base64 -d > decrypted-credentials.json" 
-  ]
+  args:
+    - "-c"
+    - |
+      echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > /workspace/decrypted-credentials.json
 
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
@@ -37,14 +38,14 @@ steps:
   args: [
     'run', 
     '-t', 'gcr.io/beat-the-streak-ml/bts-ml-etl:latest',
-    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=decrypted-credentials.json'
+    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/decrypted-credentials.json'
   ]
 
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'run', 
     '-t', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest',
-    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=decrypted-credentials.json'  
+    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/decrypted-credentials.json'  
   ]
 
 images: ['gcr.io/beat-the-streak-ml/bts-ml-etl:latest', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest']
