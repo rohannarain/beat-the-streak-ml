@@ -1,13 +1,13 @@
 steps:
 - name: gcr.io/cloud-builders/gcloud
   volumes:
-  - name: 'credentials'
-    path: '/credentials'
+  - name: 'keyvol'
+    path: '/keys'
   entrypoint: 'bash'
   args:
     - "-c"
     - |
-      echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > /credentials/decrypted-credentials.json
+      echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > /keys/decrypted-credentials.json
 
 # - name: 'ubuntu'
 #   entrypoint: 'bash'
@@ -46,32 +46,37 @@ steps:
 
 - name: 'gcr.io/cloud-builders/docker'
   volumes:
-  - name: 'credentials'
-    path: '/credentials'
-  # args: [
-  #   'run',
-  #   '-t',
-  #   '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json',
-  #   'gcr.io/$PROJECT_ID/bts-ml-etl:latest'
-  # ]
-  entrypoint: 'bash'
+  - name: 'keyvol'
+    path: '/keys'
   args: [
-    '-c', 
-    'docker run -t -e GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json -v /credentials:/credentials gcr.io/$PROJECT_ID/bts-ml-etl:latest '
+    'run',
+    '-t',
+    '-v', 'keyvol:/credentials',
+    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=credentials/decrypted-credentials.json',
+    'gcr.io/$PROJECT_ID/bts-ml-etl:latest'
   ]
+  # entrypoint: 'bash'
+  # args: [
+  #   '-c', 
+  #   'docker run -t -e GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json -v /credentials:/credentials gcr.io/$PROJECT_ID/bts-ml-etl:latest'
+  # ]
 
 - name: 'gcr.io/cloud-builders/docker'
-  # args: [
-  #   'run',
-  #   '-t',
-  #   '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json',
-  #   'gcr.io/$PROJECT_ID/bts-ml-model:latest'
-  # ]
-  entrypoint: 'bash'
+  volumes:
+  - name: 'keyvol'
+    path: '/keys'
   args: [
-    '-c', 
-    'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json -v /credentials:/credentials gcr.io/$PROJECT_ID/bts-ml-model:latest'
+    'run',
+    '-t',
+    '-v', 'keyvol:/credentials',
+    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=credentials/decrypted-credentials.json',
+    'gcr.io/$PROJECT_ID/bts-ml-model:latest'
   ]
+  # entrypoint: 'bash'
+  # args: [
+  #   '-c', 
+  #   'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json -v /credentials:/credentials gcr.io/$PROJECT_ID/bts-ml-model:latest'
+  # ]
 
 images: ['gcr.io/beat-the-streak-ml/bts-ml-etl:latest', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest']
 timeout: 6000s
