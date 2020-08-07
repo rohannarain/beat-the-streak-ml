@@ -18,7 +18,7 @@ from pathlib import Path
 from cloud_storage import *
 
 # Retreive correct data files 
-from postgres_upload import to_predictions_db
+# from postgres_upload import to_predictions_db
 from utils_config import Config
 
 CURR_SEASON = Config.get("curr_season")
