@@ -38,15 +38,17 @@ steps:
   args: [
     'run', 
     '-t', 'gcr.io/beat-the-streak-ml/bts-ml-etl:latest',
-    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/decrypted-credentials.json'
+    '-e', 'GOOGLE_APPLICATION_CREDENTIALS="/workspace/decrypted-credentials.json"'
   ]
 
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'run', 
     '-t', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest',
-    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/decrypted-credentials.json'  
+    '-e', 'GOOGLE_APPLICATION_CREDENTIALS="/workspace/decrypted-credentials.json"'  
   ]
+
+substitutions: 
 
 images: ['gcr.io/beat-the-streak-ml/bts-ml-etl:latest', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest']
 timeout: 6000s
