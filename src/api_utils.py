@@ -16,9 +16,6 @@ from pathlib import Path
 import time
 
 from cloud_storage import *
-from dotenv import load_dotenv
-
-load_dotenv()
 
 from utils_config import Config 
 yesterday = Config.get("YESTERDAY")

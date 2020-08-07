@@ -1,8 +1,6 @@
 from google.cloud import storage
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
 storage_client = storage.Client()
 
 def upload_blob(source_file_name, destination_blob_name, bucket_name="bts-ml-data"):

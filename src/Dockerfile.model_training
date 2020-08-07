@@ -9,16 +9,14 @@ RUN conda install --yes --freeze-installed \
 	sqlalchemy \
 	psycopg2
 
-RUN conda install -c conda-forge xgboost python-dotenv
+RUN conda install -c conda-forge xgboost
 RUN conda clean -afy
 
 RUN pip install google-cloud-storage
 
-COPY .env ./
 COPY utils_config.py ./
 COPY cloud_storage.py ./
 COPY postgres_upload.py ./
 COPY train_model.py ./
 COPY data/ data/
-COPY /credentials/ credentials/
 ENTRYPOINT ["python", "train_model.py"]
