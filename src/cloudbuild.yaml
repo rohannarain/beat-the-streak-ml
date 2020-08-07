@@ -4,23 +4,23 @@ steps:
   args:
     - "-c"
     - |
-      echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > /workspace/decrypted-credentials.json
-      cat /workspace/decrypted-credentials.json
+      echo "$(gcloud beta secrets versions access --secret=application-default-credentials-cloudbuild latest)" > decrypted-credentials.json
+      cat decrypted-credentials.json
 
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
-  args: ['-c', 'docker pull gcr.io/beat-the-streak-ml/bts-ml-etl:latest || exit 0']
+  args: ['-c', 'docker pull gcr.io/$PROJECT_ID/bts-ml-etl:latest || exit 0']
 
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
-  args: ['-c', 'docker pull gcr.io/beat-the-streak-ml/bts-ml-model:latest || exit 0']
+  args: ['-c', 'docker pull gcr.io/$PROJECT_ID/bts-ml-model:latest || exit 0']
 
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'build', 
     '-f', 'Dockerfile.etl', 
-    '-t', 'gcr.io/beat-the-streak-ml/bts-ml-etl:latest', 
-    '--cache-from', 'gcr.io/beat-the-streak-ml/bts-ml-etl:latest',
+    '-t', 'gcr.io/$PROJECT_ID/bts-ml-etl:latest', 
+    '--cache-from', 'gcr.io/$PROJECT_ID/bts-ml-etl:latest',
     '.'
   ]
   dir: 'src'
@@ -29,8 +29,8 @@ steps:
   args: [
     'build', 
     '-f', 'Dockerfile.model_training', 
-    '-t', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest', 
-    '--cache-from', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest',
+    '-t', 'gcr.io/$PROJECT_ID/bts-ml-model:latest', 
+    '--cache-from', 'gcr.io/$PROJECT_ID/bts-ml-model:latest',
     '.'
   ]
   dir: 'src'
@@ -39,14 +39,14 @@ steps:
   entrypoint: 'bash'
   args: [
     '-c', 
-    'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/workspace/decrypted-credentials.json gcr.io/beat-the-streak-ml/bts-ml-etl:latest'
+    'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=decrypted-credentials.json gcr.io/$PROJECT_ID/bts-ml-etl:latest'
   ]
 
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
   args: [
     '-c', 
-    'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=/workspace/decrypted-credentials.json gcr.io/beat-the-streak-ml/bts-ml-model:latest'
+    'docker run -t --env GOOGLE_APPLICATION_CREDENTIALS=decrypted-credentials.json gcr.io/$PROJECT_ID/bts-ml-model:latest'
   ]
 
 images: ['gcr.io/beat-the-streak-ml/bts-ml-etl:latest', 'gcr.io/beat-the-streak-ml/bts-ml-model:latest']
