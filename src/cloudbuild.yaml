@@ -51,8 +51,8 @@ steps:
   args: [
     'run',
     '-t',
-    '-v', 'keyvol:/credentials',
-    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=credentials/decrypted-credentials.json',
+    '-v', 'keyvol:/app/credentials',
+    # '-e', 'GOOGLE_APPLICATION_CREDENTIALS=credentials/decrypted-credentials.json',
     'gcr.io/$PROJECT_ID/bts-ml-etl:latest'
   ]
   # entrypoint: 'bash'
@@ -69,7 +69,7 @@ steps:
     'run',
     '-t',
     '-v', 'keyvol:/credentials',
-    '-e', 'GOOGLE_APPLICATION_CREDENTIALS=credentials/decrypted-credentials.json',
+    # '-e', 'GOOGLE_APPLICATION_CREDENTIALS=credentials/decrypted-credentials.json',
     'gcr.io/$PROJECT_ID/bts-ml-model:latest'
   ]
   # entrypoint: 'bash'

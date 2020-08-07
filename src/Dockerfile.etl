@@ -18,4 +18,6 @@ COPY cloud_storage.py ./
 COPY retrieve_data.py ./
 COPY data/ data/
 
+ENV GOOGLE_APPLICATION_CREDENTIALS=app/credentials/decrypted-credentials.json
+
 ENTRYPOINT ["python", "retrieve_data.py"]
