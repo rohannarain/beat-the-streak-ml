@@ -19,4 +19,7 @@ COPY cloud_storage.py ./
 COPY postgres_upload.py ./
 COPY train_model.py ./
 COPY data/ data/
+
+RUN mkdir -p credentials
+
 ENTRYPOINT ["python", "train_model.py"]

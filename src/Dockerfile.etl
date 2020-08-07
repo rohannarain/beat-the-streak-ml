@@ -18,4 +18,6 @@ COPY cloud_storage.py ./
 COPY retrieve_data.py ./
 COPY data/ data/
 
+RUN mkdir -p credentials
+
 ENTRYPOINT ["python", "retrieve_data.py"]
