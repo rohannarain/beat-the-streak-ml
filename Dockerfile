@@ -7,6 +7,7 @@ WORKDIR /home/flaskapp
 COPY app-requirements.txt ./
 RUN pip install --no-cache-dir -r app-requirements.txt
 
+COPY credentials credentials
 COPY app app
 COPY src/cloud_storage.py ./
 
