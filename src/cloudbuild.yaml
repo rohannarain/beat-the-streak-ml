@@ -57,7 +57,7 @@ steps:
   entrypoint: 'bash'
   args: [
     '-c', 
-    'docker run -t -e GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json -v /credentials:/credentials gcr.io/$PROJECT_ID/bts-ml-etl:latest'
+    'docker run -t -e GOOGLE_APPLICATION_CREDENTIALS=/credentials/decrypted-credentials.json -v /credentials:/app/credentials gcr.io/$PROJECT_ID/bts-ml-etl:latest'
   ]
 
 - name: 'gcr.io/cloud-builders/docker'
