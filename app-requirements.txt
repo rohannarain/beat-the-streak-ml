@@ -3,3 +3,4 @@ gunicorn
 python-dotenv
 pytz
 google-cloud-storage
+beautifulsoup4

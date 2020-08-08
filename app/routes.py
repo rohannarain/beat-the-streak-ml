@@ -1,11 +1,26 @@
 from flask import render_template, redirect, flash, url_for, request
 from app import app
 from cloud_storage import download_blob, check_gcloud_blob_exists
+from bs4 import BeautifulSoup
+
 import csv
+import requests
 
 TITLE = 'Beat the Streak with ML'
 TODAY = app.config['TODAY_PACIFIC_TIME']
 
+def find_player_bbref(player_name):
+	bbref = 'https://baseball-reference.com'
+	last_initial = player_name.lower().split(" ")[-1][0]
+
+	page_req = requests.get(f'{bbref}/players/{last_initial}/')
+	soup = BeautifulSoup(page_req.text, 'html.parser')
+
+	active_player_tags = soup.div.find_all('b')
+	active_players = {tag.a.text:f'{bbref}{tag.a["href"]}' for tag in active_player_tags}
+
+	return active_players.get(player_name,
+		'Player not found. Either they are not an active player or they do not exist.')
 
 def get_predictions_file():
 	predictions_csv = f'data/predictions/season_{TODAY[-4:]}/predictions_{TODAY}.csv'
@@ -35,9 +50,13 @@ def generate_predictions():
 		col_names = {colname: idx for idx, colname in enumerate(header) if colname in display_cols}
 		cols_list = list(zip(*[row for row in preds]))
 
-	return col_names, cols_list
+	urls = []
+	for player in cols_list[col_names['Name']]:
+		urls.append(find_player_bbref(player))
 
-col_names, cols_list = (None, None) if blob_not_found_msg else generate_predictions()
+	return col_names, cols_list, urls
+
+col_names, cols_list, urls = (None, None, None) if blob_not_found_msg else generate_predictions()
 
 @app.route("/")
 @app.route("/home")
@@ -46,6 +65,7 @@ def home():
 							blob_not_found_msg=blob_not_found_msg,
 							col_names=col_names,
 							cols_list=cols_list,
+							urls=urls,
 							today=TODAY.replace("_", "/"))
 
 @app.route("/about")

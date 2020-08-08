@@ -11,16 +11,17 @@
     <div class="jumbotron jumbotron-fluid">
       <div class="container">
         <h2>What is this?</h2>
-        <p>In short, this project involves using several machine learning models (Random Forests, AdaBoost, and Logistic Regression specifically) to play Major League Baseball's <a href="https://www.mlb.com/apps/beat-the-streak">Beat The Streak</a> contest. The idea is simple: every day, you decide which player you think is most likely to get a hit on that given day, and you enter that pick into the app. The goal is to get a streak going--if you pick 56 players in a row correctly, you'll win a lot of money.</p>
+        <p>In short, this project involves using several machine learning models (Random Forests, XGBoost, and Logistic Regression specifically) to play Major League Baseball's <a href="https://www.mlb.com/apps/beat-the-streak">Beat The Streak</a> contest. The idea is simple: every day, you decide which player you think is most likely to get a hit on that given day, and you enter that pick into the app. The goal is to get a streak going--if you pick 56 players in a row correctly, you'll win a lot of money.</p>
 
         <h2>How does it work?</h2>
         <p>I have a <a href="https://decisionsandvisions.wordpress.com">blog</a> post written about this project--it includes analysis of the models I used and some insight into how I went about retrieving the data. Feel free to check it out!</p>
+        <p><b>2020 update</b>: I have another blog post with some updates that is in the works.</p>
 
         <h2>What do I do with the table on the <a href="{{ url_for('home') }}">home</a> page?</h2>
         <p>The table displays the top 10 most likely players to get a hit today, based on the probabilities outputted by whichever algorithm performed best on a validation set (more details in aforementioned blog post). It's up to you to use whatever context you feel is necessary (opposing team, ballpark, etc.) in addition to this table to make sure your picks are intelligent and informed.</p>
 
         <h2>Who made this?</h2>
-        <p>My name is Rohan Narain, and I'm a recent graduate from UC Berkeley, where I studied Statistics and Data Science. My Github is <a href="https://github.com/rohannarain">here</a>, and the repository containing source code for this project is <a href="https://github.com/rohannarain/beat_the_streak">here</a>. I'm an avid baseball fan, and one of the things I love most about the sport is the statistics.</p>
+        <p>My name is Rohan Narain, and I'm a recent graduate from UC Berkeley, where I studied Statistics and Data Science. My Github is <a href="https://github.com/rohannarain">here</a>, and the repository containing source code for this project is <a href="https://github.com/rohannarain/beat-the-streak-ml">here</a>. I'm an avid baseball fan, and one of the things I love most about the sport is the statistics.</p>
       </div>
     </div>
 {% endblock %}

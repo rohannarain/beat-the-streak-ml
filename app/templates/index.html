@@ -13,9 +13,9 @@
 		  {{ blob_not_found_msg }}
 		</div>
 	  {% else %}
-	  <div class="list-group mx-auto w-75">
+	  <div class="list-group mx-auto w-75 mb-5">
 	  	{% for i in range(cols_list[0]|length) %}
-		  <a href="#" class="list-group-item list-group-item-action style="background-color: rgba(245, 245, 245, 0.4);">
+		  <a href="{{ urls[i] }}" class="list-group-item list-group-item-action" target="_blank">
 		    <div class="d-flex w-100 justify-content-between">
 		      <h5 class="mb-1">{{i+1}}. {{ cols_list[col_names['Name']][i] }}</h5>
 		    </div>
