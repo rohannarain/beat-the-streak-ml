@@ -8,9 +8,9 @@ yesterday = today - datetime.timedelta(days=1)
 
 class Config:
 	_conf = {
-		"curr_season": 2020,
-		"curr_season_start": "07/23/2020",
-		"curr_season_end": "09/27/2020",
+		"curr_season": 2021,
+		"curr_season_start": "04/01/2021",
+		"curr_season_end": "10/03/2021",
 		"YESTERDAY": yesterday.strftime("%m/%d/%Y"),
 		"TODAY": today.strftime("%m/%d/%Y"),
 	}
@@ -26,3 +26,4 @@ class Config:
 			Config._conf[name] = value
 		else:
 			raise NameError("Name not accepted in set() method")
+
