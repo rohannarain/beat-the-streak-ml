@@ -21,9 +21,9 @@ from utils_config import Config
 yesterday = Config.get("YESTERDAY")
 today = Config.get("TODAY")
 
-Config.set("curr_season", 2020)
-Config.set("curr_season_start", "07/23/2020")
-Config.set("curr_season_end", "09/27/2020")
+Config.set("curr_season", 2021)
+Config.set("curr_season_start", "04/01/2021")
+Config.set("curr_season_end", "10/03/2021")
 
 CURR_SEASON = Config.get("curr_season")
 CURR_SEASON_START = Config.get("curr_season_start")
